@@ -1,3 +1,4 @@
+import quoteController from "./controllers/quoteController.js";
 
 
 // Varibles that captures the intent of the user
@@ -39,13 +40,9 @@ switch (currentCommand) {
         console.log('Not implemented yet');
         break;
     case 'help':
-        // TODO: Access a method from quotes controller
-        // Method should print usage of this app
-        console.log('Not implemented yet');
+        quoteController.printUsage();
         break;
     default:
-        // TODO: Access a method from quotes controller
-        // Method should print usage of this app since no command was specified
-        console.log('Not implemented yet');
+        quoteController.printUsage();
         break;
 }
