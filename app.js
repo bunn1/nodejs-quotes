@@ -32,9 +32,8 @@ switch (currentCommand) {
         quoteController.removeQuote(currentQuoteId);
         break;
     case 'search':
-        // TODO: Access a method from quotes controller
         // Method should ask for search string then return results
-        console.log('Not implemented yet');
+        quoteController.searchQuote();
         break;
     case 'help':
         quoteController.printUsage();
@@ -46,6 +45,4 @@ switch (currentCommand) {
 
 
 // console.log("----- TESTING ------")
-// const isSuccessful = quoteModel.addQuote('spinage is good for you', 'popeye');
-// console.log("result:", isSuccessful);
-// console.log(quoteModel.getQuotes());
+// console.log(quoteModel.searchQuotes("hit me baby"));

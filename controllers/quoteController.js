@@ -58,5 +58,29 @@ export default {
         }
 
         console.log(quoteViews.quoteRemoved(quoteToBeRemoved));
+    },
+    searchQuote: function() {
+         // Start a read line interface to ask user for parameters
+         const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+
+        rl.question(quoteViews.questionSearchString, (searchString) => {
+            const matches = quoteModel.searchQuotes(searchString);
+
+            if (matches.length <= 0) {
+                console.log(quoteViews.noSearchMatches(searchString));
+                rl.close();
+                return;
+            }
+
+            const view = quoteViews.allQuotes(matches);
+
+            console.log(quoteViews.matchesFound(searchString));
+            console.log(view);
+            rl.close();
+        })
+        
     }
 }
