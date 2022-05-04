@@ -1,4 +1,5 @@
 import quoteController from "./controllers/quoteController.js";
+import quoteModel from "./models/quoteModel.js";
 
 
 // Varibles that captures the intent of the user
@@ -22,7 +23,7 @@ switch (currentCommand) {
         // ------- BEGIN HERE ----------
         // TODO: Access a method from quotes controller
         // Method should create a new quote
-        console.log('Not implemented yet');
+        oconsole.log('Not implemented yet');
         break;
     case 'get':
         // TODO: Access a method from quotes controller
@@ -46,3 +47,9 @@ switch (currentCommand) {
         quoteController.printUsage();
         break;
 }
+
+
+console.log("----- TESTING ------")
+const isSuccessful = quoteModel.addQuote('spinage is good for you', 'popeye');
+console.log("result:", isSuccessful);
+console.log(quoteModel.getQuotes());

@@ -7,6 +7,8 @@ export default {
     },
     createQuote: function () {
         // TODO: Create Controller Method for creating new quote
+
+        // const isSuccesfull = todoModel.addQuote(quote, author)
     },
     // Continure with more methods here ...
 }
