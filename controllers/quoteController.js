@@ -34,5 +34,11 @@ export default {
             })
         })
     },
-    // Continure with more methods here ...
+    getAllQuotes: function () {
+        const allQuotes = quoteModel.getQuotes();
+
+        const view = quoteViews.allQuotes(allQuotes);
+
+        console.log(view);
+    }
 }

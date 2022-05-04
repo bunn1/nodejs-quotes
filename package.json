@@ -12,5 +12,8 @@
     "Quotes"
   ],
   "author": "Henry Bergström",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.0.1"
+  }
 }

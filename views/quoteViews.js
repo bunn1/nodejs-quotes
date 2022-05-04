@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 export default {
     usage: `
 Welcome to Quotes app.
@@ -10,8 +12,9 @@ Usage:
     search:     used to search quote by text or author
     help:       used to display instructions
      `,
-     questionQuote: `What is the quote? `,
-     questionAuthor: `What is the author? `,
-     quoteSaved: "Quote has been saved",
-     quoteNotSaved: "Quote has not been saved successfully"
+     questionQuote: chalk.blue(`What is the quote? `),
+     questionAuthor: chalk.blue(`What is the author? `),
+     quoteSaved: chalk.green("Quote has been saved"),
+     quoteNotSaved: chalk.red("Quote has not been saved successfully"),
+     allQuotes: (quotes) => quotes.map(quote => `${chalk.blue(quote.id)}. ${quote.author}: '${chalk.italic(quote.quote)}'`).join('\n')
 }
