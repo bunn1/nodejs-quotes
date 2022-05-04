@@ -24,15 +24,12 @@ switch (currentCommand) {
         quoteController.createQuote();
         break;
     case 'get':
-        // TODO: Access a method from quotes controller
         // Method should get all quotes
-        // console.table(quoteModel.getQuotes());
         quoteController.getAllQuotes();
         break;
     case 'remove':
-        // TODO: Access a method from quotes controller
         // Method should remove a quote given id
-        console.log('Not implemented yet');
+        quoteController.removeQuote(currentQuoteId);
         break;
     case 'search':
         // TODO: Access a method from quotes controller

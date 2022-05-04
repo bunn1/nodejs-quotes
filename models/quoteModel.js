@@ -6,6 +6,9 @@ const quoteModel = {
     getQuotes: function() {
         return JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
     },
+    getQuote: function(id) {
+        return this.getQuotes().find(quote => quote.id === id);
+    },
     saveQuotes: function(quotes) {
         return fs.writeFileSync(dbPath, JSON.stringify(quotes));
     },
@@ -30,6 +33,24 @@ const quoteModel = {
 
         // Write new state to DB
         this.saveQuotes(allQuotes);
+
+        return true;
+    },
+    removeQuote: function (id) {
+        // Get all quotes
+        const allQuotes = this.getQuotes();
+
+        // if quotes are not defined we return false
+        // to signal that something went wrong
+        if (!allQuotes) {
+            return false;
+        }
+
+        // Remove quote specified by id
+        const filteredQuotes = allQuotes.filter(quote => quote.id !== id);
+
+        // Write new state to db
+        this.saveQuotes(filteredQuotes);
 
         return true;
     }

@@ -12,9 +12,12 @@ Usage:
     search:     used to search quote by text or author
     help:       used to display instructions
      `,
+     errorInvalidId: chalk.red("Error, Invalid id specified"),
+     errorQuoteNotRemoved: chalk.red("Error, quote was not removed successfully"),
+     errorQuoteNotSaved: chalk.red("Quote has not been saved successfully"),
      questionQuote: chalk.blue(`What is the quote? `),
      questionAuthor: chalk.blue(`What is the author? `),
      quoteSaved: chalk.green("Quote has been saved"),
-     quoteNotSaved: chalk.red("Quote has not been saved successfully"),
-     allQuotes: (quotes) => quotes.map(quote => `${chalk.blue(quote.id)}. ${quote.author}: '${chalk.italic(quote.quote)}'`).join('\n')
+     quoteRemoved: (quote) => chalk.green(`'${quote.quote}' by ${quote.author} has been removed`),
+     allQuotes: (quotes) => quotes.map(quote => `id: ${chalk.blue(quote.id)} - ${quote.author}: '${chalk.italic(quote.quote)}'`).join('\n')
 }

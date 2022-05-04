@@ -22,7 +22,7 @@ export default {
 
                 // Check if something went wrong
                 if (!isOK) {
-                    console.log(quoteViews.quoteNotSaved);
+                    console.log(quoteViews.errorQuoteNotSaved);
                     return;
                 }
 
@@ -40,5 +40,23 @@ export default {
         const view = quoteViews.allQuotes(allQuotes);
 
         console.log(view);
+    },
+    removeQuote: function(idStr) {
+        const id = Number(idStr);
+
+        if (id < 0) {
+            console.log(quoteViews.errorInvalidId);
+            return;
+        }
+
+        const quoteToBeRemoved = quoteModel.getQuote(id);
+        const isOK = quoteModel.removeQuote(quoteToBeRemoved.id);
+
+        if (!isOK) {
+            console.log(quoteViews.errorQuoteNotRemoved);
+            return;
+        }
+
+        console.log(quoteViews.quoteRemoved(quoteToBeRemoved));
     }
 }
