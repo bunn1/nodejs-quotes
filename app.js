@@ -9,7 +9,7 @@ const supportedCommands = ['new', 'get', 'remove', 'search', 'help'];
 
 // check if currentCommand exists AND is not included in `supportedCommands`
 if (currentCommand && !supportedCommands.includes(currentCommand)) {
-    console.log(todoViews.commandNotSupportedError);
+    console.log("Here should be a view presented");
     process.exit(1);
 }
 
