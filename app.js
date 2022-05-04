@@ -18,6 +18,7 @@ if (currentCommand && !supportedCommands.includes(currentCommand)) {
 // Router: Redirects to specific controller method based on currentCommand
 switch (currentCommand) {
     case 'new':
+        // ------- BEGIN HERE ----------
         // TODO: Access a method from quotes controller
         // Method should create a new quote
         console.log('Not implemented yet');
