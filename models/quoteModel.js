@@ -13,6 +13,8 @@ const quoteModel = {
         // Model Method to write new quote into database
         const allQuotes = this.getQuotes();
 
+        // if quotes are not defined we return false
+        // to signal that something went wrong
         if (!allQuotes) {
             return false;
         }

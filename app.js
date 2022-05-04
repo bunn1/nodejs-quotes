@@ -23,7 +23,7 @@ switch (currentCommand) {
         // ------- BEGIN HERE ----------
         // TODO: Access a method from quotes controller
         // Method should create a new quote
-        oconsole.log('Not implemented yet');
+        quoteController.createQuote();
         break;
     case 'get':
         // TODO: Access a method from quotes controller
@@ -49,7 +49,7 @@ switch (currentCommand) {
 }
 
 
-console.log("----- TESTING ------")
-const isSuccessful = quoteModel.addQuote('spinage is good for you', 'popeye');
-console.log("result:", isSuccessful);
-console.log(quoteModel.getQuotes());
+// console.log("----- TESTING ------")
+// const isSuccessful = quoteModel.addQuote('spinage is good for you', 'popeye');
+// console.log("result:", isSuccessful);
+// console.log(quoteModel.getQuotes());
