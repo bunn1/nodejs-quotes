@@ -1,4 +1,5 @@
 import readline from 'readline';
+import express from "express";
 import quoteViews from "../views/quoteViews.js";
 import quoteModel from "../models/quoteModel.js";
 
@@ -6,40 +7,24 @@ export default {
     printUsage: function() {
         console.log(quoteViews.usage);
     },
-    createQuote: function () {
+    createQuote: (req, res) => {
+        const quote = req.body.quote;
+        const author = req.body.author;
+
+        console.log(quote, author);
         // Controller Method for creating new quote
+        const isOK = quoteModel.addQuote(quote, author);
 
-        // Start a read line interface to ask user for parameters
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
+        // Check if something went wrong
+        if (!isOK) {
+            res.render("error", { message: "Could not save quote" });
+            return;
+        }
 
-        rl.question(quoteViews.questionQuote, (quoteAnswer) => {
-            rl.question(quoteViews.questionAuthor, (authorAnswer) => {
-                // Save quote via quoteModel
-                const isOK = quoteModel.addQuote(quoteAnswer, authorAnswer);
-
-                // Check if something went wrong
-                if (!isOK) {
-                    console.log(quoteViews.errorQuoteNotSaved);
-                    return;
-                }
-
-                // Notify user
-                console.log(quoteViews.quoteSaved);
-
-                // Close readline interface
-                rl.close();
-            })
-        })
+        res.render("quotes", { quotes: quoteModel.getQuotes() });
     },
-    getAllQuotes: function () {
-        const allQuotes = quoteModel.getQuotes();
-
-        const view = quoteViews.allQuotes(allQuotes);
-
-        console.log(view);
+    getAllQuotes: (req, res) => {
+        res.render("quotes", { quotes: quoteModel.getQuotes() });
     },
     removeQuote: function(idStr) {
         const id = Number(idStr);
@@ -59,28 +44,36 @@ export default {
 
         console.log(quoteViews.quoteRemoved(quoteToBeRemoved));
     },
-    searchQuote: function() {
-         // Start a read line interface to ask user for parameters
-         const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-        });
-
-        rl.question(quoteViews.questionSearchString, (searchString) => {
-            const matches = quoteModel.searchQuotes(searchString);
-
-            if (matches.length <= 0) {
-                console.log(quoteViews.noSearchMatches(searchString));
-                rl.close();
-                return;
-            }
-
-            const view = quoteViews.allQuotes(matches);
-
-            console.log(quoteViews.matchesFound(searchString));
-            console.log(view);
-            rl.close();
-        })
+    searchQuote: (req, res) => {
+        const searchStr = req.query.searchStr;
         
+        const matches = quoteModel.searchQuotes(searchStr);
+
+        // TODO show different view if no matches found
+        res.render("quotes", { quotes: matches });
     }
+    // searchQuote: function() {
+    //      // Start a read line interface to ask user for parameters
+    //      const rl = readline.createInterface({
+    //         input: process.stdin,
+    //         output: process.stdout
+    //     });
+
+    //     rl.question(quoteViews.questionSearchString, (searchString) => {
+    //         const matches = quoteModel.searchQuotes(searchString);
+
+    //         if (matches.length <= 0) {
+    //             console.log(quoteViews.noSearchMatches(searchString));
+    //             rl.close();
+    //             return;
+    //         }
+
+    //         const view = quoteViews.allQuotes(matches);
+
+    //         console.log(quoteViews.matchesFound(searchString));
+    //         console.log(view);
+    //         rl.close();
+    //     })
+        
+    // }
 }

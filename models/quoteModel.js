@@ -19,6 +19,13 @@ const quoteModel = {
     // if quotes are not defined we return false
     // to signal that something went wrong
     if (!allQuotes) {
+      console.log("allQuotes not defined");
+      return false;
+    }
+
+    // if quote or author is not defined then exit early
+    if (!quote || !author) {
+      console.log("quote or author is not defined");
       return false;
     }
 

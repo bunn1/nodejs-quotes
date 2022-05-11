@@ -1,47 +1,69 @@
 import quoteController from "./controllers/quoteController.js";
 import quoteModel from "./models/quoteModel.js";
 
+import express from "express";
 
-// Varibles that captures the intent of the user
-const currentCommand = process.argv[2];
-const currentQuoteId = process.argv[3];
+const app = express();
 
-// Our list of supported commands
-const supportedCommands = ['new', 'get', 'remove', 'search', 'help'];
+// set the view engine to ejs
+app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
 
-// check if currentCommand exists AND is not included in `supportedCommands`
-if (currentCommand && !supportedCommands.includes(currentCommand)) {
-    console.log("Here should be a view presented");
-    process.exit(1);
-}
+app.get('/', quoteController.getAllQuotes);
+app.get('/quotes', quoteController.getAllQuotes);
 
-// TODO: make sure if running `remove` currentQuoteId is defined!
+app.get('/search', quoteController.searchQuote);
+app.post('/quotes', quoteController.createQuote);
 
-// Router: Redirects to specific controller method based on currentCommand
-switch (currentCommand) {
-    case 'new':
-        // Method should create a new quote
-        quoteController.createQuote();
-        break;
-    case 'get':
-        // Method should get all quotes
-        quoteController.getAllQuotes();
-        break;
-    case 'remove':
-        // Method should remove a quote given id
-        quoteController.removeQuote(currentQuoteId);
-        break;
-    case 'search':
-        // Method should ask for search string then return results
-        quoteController.searchQuote();
-        break;
-    case 'help':
-        quoteController.printUsage();
-        break;
-    default:
-        quoteController.printUsage();
-        break;
-}
+
+// app.get('/remove/:id', (req, res) => {
+//     res.json(quoteModel.removeQuote(req.params.id));
+// });
+
+app.listen(3000, () => {
+    console.log(`Example app listening on port ${3000}`);
+})
+
+// // Varibles that captures the intent of the user
+// const currentCommand = process.argv[2];
+// const currentQuoteId = process.argv[3];
+
+// // Our list of supported commands
+// const supportedCommands = ['new', 'get', 'remove', 'search', 'help'];
+
+// // check if currentCommand exists AND is not included in `supportedCommands`
+// if (currentCommand && !supportedCommands.includes(currentCommand)) {
+//     console.log("Here should be a view presented");
+//     process.exit(1);
+// }
+
+// // TODO: make sure if running `remove` currentQuoteId is defined!
+
+// // Router: Redirects to specific controller method based on currentCommand
+// switch (currentCommand) {
+//     case 'new':
+//         // Method should create a new quote
+//         quoteController.createQuote();
+//         break;
+//     case 'get':
+//         // Method should get all quotes
+//         quoteController.getAllQuotes();
+//         break;
+//     case 'remove':
+//         // Method should remove a quote given id
+//         quoteController.removeQuote(currentQuoteId);
+//         break;
+//     case 'search':
+//         // Method should ask for search string then return results
+//         quoteController.searchQuote();
+//         break;
+//     case 'help':
+//         quoteController.printUsage();
+//         break;
+//     default:
+//         quoteController.printUsage();
+//         break;
+// }
 
 
 // console.log("----- TESTING ------")
