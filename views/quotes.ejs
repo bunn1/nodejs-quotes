@@ -1,26 +1,116 @@
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Quotes Web App</title>
- </head>
- <body>
-     <h1>Quotes</h1>
-     <form action="/search" method="get">
-         <input type="text" name="searchStr" id="searchStr">
-         <button type="submit">Search</button>
-     </form>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quotes Web App</title>
+
+    <style>
+      .quoteContainer {
+        display: flex;
+        justify-content: space-between;
+        width: 25%;
+        margin-bottom: 24px;
+        align-items: center;
+      }
+
+      .message {
+        background-color: lightgreen;
+        text-align: center;
+        width: 100%;
+        display: none;
+      }
+
+      .show {
+        display: block;
+      }
+
+      [contenteditable="true"] {
+        background-color: #ccc;
+        border-radius: 8px;
+        padding: 4px 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="message"></div>
+    <h1>Quotes</h1>
+    <form action="/search" method="get">
+      <input type="text" name="searchStr" id="searchStr" />
+      <button type="submit">Search</button>
+    </form>
     <% quotes.forEach(function(quote) { %>
-    <p><%= quote.author %>: <%= quote.quote %></p>
+    <div class="quoteContainer">
+      <p class="quote-author"><%= quote.author %></p>
+      <span>:</span>
+      <p class="quote-quote"><%= quote.quote %></p>
+      <button class="edit-button" data-id="<%= quote.id %>">Edit</button>
+      <button onclick="handleDelete(<%= quote.id %>)">Delete</button>
+    </div>
     <% }); %>
     <h2>Create Quote</h2>
     <form action="/quotes" method="post">
-        <label for="quote">Quote</label>
-        <input type="text" name="quote" id="quote">
-        <label for="author">Author</label>
-        <input type="text" name="author" id="author">
-        <button type="submit">Create</button>
+      <label for="quote">Quote</label>
+      <input type="text" name="quote" id="quote" />
+      <label for="author">Author</label>
+      <input type="text" name="author" id="author" />
+      <button type="submit">Create</button>
     </form>
- </body>
- </html>
+
+    <script>
+      async function handleDelete(id) {
+        console.log("HandleDelete was called with id", id);
+        const response = await fetch(`/quotes/${id}`, { method: "delete" });
+
+        if (response.redirected) {
+          window.location.href = response.url; // '/'
+        }
+      }
+
+      async function handleEdit(evt) {
+        const id = Number(evt.target.dataset.id); // data-id -> dataset.id
+        const container = evt.target.parentElement;
+        const authorEl = container.querySelector(".quote-author");
+        const quoteEl = container.querySelector(".quote-quote");
+
+        // if not editable make them editable
+        if (!authorEl.isContentEditable && !quoteEl.isContentEditable) {
+          authorEl.contentEditable = true;
+          quoteEl.contentEditable = true;
+
+          // clicking the same button should save the changes
+          evt.target.innerText = "Save";
+        } else {
+          // Second time clicked it should save changes
+
+          // reset element to be non editable
+          authorEl.contentEditable = false;
+          quoteEl.contentEditable = false;
+          evt.target.innerText = "Edit";
+
+          // Look at values of authorEl and quoteEl and submit new quote
+          const newQuote = {
+            author: authorEl.innerText,
+            quote: quoteEl.innerText,
+          };
+          const response = await fetch(`/quotes/${id}`, {
+            method: "put",
+            body: JSON.stringify(newQuote),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          
+          // Check if there is a redirect to follow the new url
+          if (response.redirected) {
+            window.location.href = response.url;
+          }
+        }
+      }
+
+      document
+        .querySelectorAll(".edit-button")
+        .forEach((btn) => (btn.onclick = handleEdit));
+    </script>
+  </body>
+</html>

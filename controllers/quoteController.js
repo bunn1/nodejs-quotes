@@ -26,8 +26,8 @@ export default {
     getAllQuotes: (req, res) => {
         res.render("quotes", { quotes: quoteModel.getQuotes() });
     },
-    removeQuote: function(idStr) {
-        const id = Number(idStr);
+    removeQuote: (req, res) => {
+        const id = Number(req.params.id);
 
         if (id < 0) {
             console.log(quoteViews.errorInvalidId);
@@ -43,6 +43,34 @@ export default {
         }
 
         console.log(quoteViews.quoteRemoved(quoteToBeRemoved));
+
+        res.redirect('/');
+    },
+    updateQuote: (req, res) => {
+        const id = Number(req.params.id);
+        const quote = req.body.quote;
+        const author = req.body.author;
+        
+        if (id < 0) {
+            console.log(quoteViews.errorInvalidId);
+            return;
+        }
+
+        if (!quote || !author) {
+            console.log("Quote and Author is not defined", quote, author);
+            return;
+        }
+
+        const isOK = quoteModel.updateQuote(id, quote, author);
+
+        if (!isOK) {
+            console.log("Quote not Updated");
+            return;
+        }
+
+        console.log("Quote Updated");
+
+        res.redirect('/');
     },
     searchQuote: (req, res) => {
         const searchStr = req.query.searchStr;

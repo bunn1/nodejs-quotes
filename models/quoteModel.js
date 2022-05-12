@@ -61,6 +61,31 @@ const quoteModel = {
 
     return true;
   },
+  updateQuote: function (id, newQuote, newAuthor) {
+    // Get all quotes
+    const allQuotes = this.getQuotes();
+
+    // if quotes are not defined we return false
+    // to signal that something went wrong
+    if (!allQuotes) {
+      return false;
+    }
+
+    // Update quote specified by id
+    const idx = allQuotes.findIndex((quote) => quote.id === id);
+
+    if (idx < 0) {
+      return false;
+    }
+
+    allQuotes[idx].quote = newQuote;
+    allQuotes[idx].author = newAuthor;
+
+    // Write new state to db
+    this.saveQuotes(allQuotes);
+
+    return true;
+  },
   searchQuotes: function (searchString) {
     // Get all quotes
     const allQuotes = this.getQuotes();

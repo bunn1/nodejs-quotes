@@ -1,5 +1,4 @@
 import quoteController from "./controllers/quoteController.js";
-import quoteModel from "./models/quoteModel.js";
 
 import express from "express";
 
@@ -8,17 +7,17 @@ const app = express();
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get('/', quoteController.getAllQuotes);
 app.get('/quotes', quoteController.getAllQuotes);
 
 app.get('/search', quoteController.searchQuote);
 app.post('/quotes', quoteController.createQuote);
+app.put('/quotes/:id', quoteController.updateQuote);
 
 
-// app.get('/remove/:id', (req, res) => {
-//     res.json(quoteModel.removeQuote(req.params.id));
-// });
+app.delete('/quotes/:id', quoteController.removeQuote);
 
 app.listen(3000, () => {
     console.log(`Example app listening on port ${3000}`);
