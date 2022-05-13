@@ -48,7 +48,7 @@ export default {
             console.log(quoteViews.errorInvalidId);
             return;
         }
-
+        
         const quoteToBeRemoved = quoteModel.getQuote(id);
         const isOK = quoteModel.removeQuote(quoteToBeRemoved.id);
 

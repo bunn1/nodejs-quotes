@@ -29,6 +29,7 @@ switch (currentCommand) {
         break;
     case 'remove':
         // Method should remove a quote given id
+      
         quoteController.removeQuote(currentQuoteId);
         break;
     case 'search':

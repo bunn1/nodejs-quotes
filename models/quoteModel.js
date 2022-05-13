@@ -12,6 +12,7 @@ const quoteModel = {
   saveQuotes: function (quotes) {
     return fs.writeFileSync(dbPath, JSON.stringify(quotes));
   },
+  
   addQuote: function (quote, author) {
     // Model Method to write new quote into database
     const allQuotes = this.getQuotes();
@@ -46,14 +47,16 @@ const quoteModel = {
       return false;
     }
 
-    // Remove quote specified by id
+    // Remove quote specified by id 
+    
     const filteredQuotes = allQuotes.filter((quote) => quote.id !== id);
-
+   
     // Write new state to db
     this.saveQuotes(filteredQuotes);
 
     return true;
   },
+
   searchQuotes: function (searchString) {
     // Get all quotes
     const allQuotes = this.getQuotes();
