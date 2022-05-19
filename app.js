@@ -6,8 +6,8 @@ const app = express();
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // Tell Express App to parse form-data in body
+app.use(express.json()); // Tell Express App to parse json in body
 
 app.get('/', quoteController.getAllQuotes);
 app.get('/quotes', quoteController.getAllQuotes);
