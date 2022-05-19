@@ -8,10 +8,14 @@
     <style>
       .quoteContainer {
         display: flex;
-        justify-content: space-between;
-        width: 25%;
+        width: 40%;
         margin-bottom: 24px;
         align-items: center;
+      }
+      .card {
+        background-color: aliceblue;
+        padding: 8px 16px;
+        border-radius: 8px;
       }
 
       .message {
@@ -41,11 +45,13 @@
     </form>
     <% quotes.forEach(function(quote) { %>
     <div class="quoteContainer">
-      <p class="quote-author"><%= quote.author %></p>
-      <span>:</span>
-      <p class="quote-quote"><%= quote.quote %></p>
-      <button class="edit-button" data-id="<%= quote.id %>">Edit</button>
-      <button onclick="handleDelete(<%= quote.id %>)">Delete</button>
+      <div class="card">
+        <p class="quote-author">Author: <%= quote.author %></p>
+        <p class="quote-quote">Quote:<%= quote.quote %></p>
+        <p>Date: <%= quote.date %></p>
+        <button class="edit-button" data-id="<%= quote.id %>">Edit</button>
+        <button onclick="handleDelete(<%= quote.id %>)">Delete</button>
+    </div>
     </div>
     <% }); %>
     <h2>Create Quote</h2>
@@ -54,6 +60,8 @@
       <input type="text" name="quote" id="quote" />
       <label for="author">Author</label>
       <input type="text" name="author" id="author" />
+      <label for="date">Date</label>
+      <input type="date" name="date" id="date" />
       <button type="submit">Create</button>
     </form>
 
@@ -72,6 +80,8 @@
         const container = evt.target.parentElement;
         const authorEl = container.querySelector(".quote-author");
         const quoteEl = container.querySelector(".quote-quote");
+        const dateEl = container.querySelector(".quote-date");
+        console.log(dateEl);
 
         // if not editable make them editable
         if (!authorEl.isContentEditable && !quoteEl.isContentEditable) {
@@ -92,6 +102,7 @@
           const newQuote = {
             author: authorEl.innerText,
             quote: quoteEl.innerText,
+            date: dateEl.value,
           };
           const response = await fetch(`/quotes/${id}`, {
             method: "put",

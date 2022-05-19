@@ -3,8 +3,23 @@ import fs from "fs";
 const dbPath = "./quoteDB.json";
 
 const quoteModel = {
-  getQuotes: function () {
-    return JSON.parse(fs.readFileSync(dbPath, "utf-8"));
+  getQuotes: function (startDate, endDate) {
+    // Get all quotes
+    const allQuotes = JSON.parse(fs.readFileSync(dbPath, "utf-8"));
+    console.log('MODEL: getQutes', allQuotes);
+    // No interval specified
+    if (!startDate || !endDate) {
+      return allQuotes;
+    } else { // Interval specified
+      const quotesInInterval = allQuotes.filter(quote => {
+        const quoteDateUnix = new Date(quote.date).getTime();
+        const startDateUnix = new Date(startDate).getTime();
+        const endDateUnix = new Date(endDate).getTime();
+
+        return startDateUnix <= quoteDateUnix && quoteDateUnix <= endDateUnix;
+      })
+      return quotesInInterval;
+    }
   },
   getQuote: function (id) {
     return this.getQuotes().find((quote) => quote.id === id);
@@ -12,7 +27,7 @@ const quoteModel = {
   saveQuotes: function (quotes) {
     return fs.writeFileSync(dbPath, JSON.stringify(quotes));
   },
-  addQuote: function (quote, author) {
+  addQuote: function (quote, author, date) {
     // Model Method to write new quote into database
     const allQuotes = this.getQuotes();
 
@@ -24,8 +39,8 @@ const quoteModel = {
     }
 
     // if quote or author is not defined then exit early
-    if (!quote || !author) {
-      console.log("quote or author is not defined");
+    if (!quote || !author || !date) {
+      console.log("quote, author or date is not defined");
       return false;
     }
 
@@ -33,7 +48,7 @@ const quoteModel = {
     const newId = (lastQuote?.id || 0) + 1;
 
     // Create new quote object
-    const newQuote = { id: newId, quote, author };
+    const newQuote = { id: newId, quote, author, date };
 
     // Update Javascript array with new quote
     allQuotes.push(newQuote);
@@ -61,7 +76,7 @@ const quoteModel = {
 
     return true;
   },
-  updateQuote: function (id, newQuote, newAuthor) {
+  updateQuote: function (id, newQuote, newAuthor, newDate) {
     // Get all quotes
     const allQuotes = this.getQuotes();
 
@@ -80,6 +95,7 @@ const quoteModel = {
 
     allQuotes[idx].quote = newQuote;
     allQuotes[idx].author = newAuthor;
+    allQuotes[idx].date = date;
 
     // Write new state to db
     this.saveQuotes(allQuotes);
@@ -93,7 +109,7 @@ const quoteModel = {
     // Filter quotes for search string matches
     const matches = allQuotes.filter((quote) =>
       quote.author.toLowerCase().includes(searchString.toLowerCase()) ||
-      quote.quote.toLowerCase().includes(searchString.toLowerCase()) 
+      quote.quote.toLowerCase().includes(searchString.toLowerCase())
     );
 
     // Return matches
