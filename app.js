@@ -29,7 +29,6 @@ switch (currentCommand) {
         break;
     case 'remove':
         // Method should remove a quote given id
-      
         quoteController.removeQuote(currentQuoteId);
         break;
     case 'search':
@@ -46,4 +45,5 @@ switch (currentCommand) {
 
 
 // console.log("----- TESTING ------")
+// console.log(quoteModel.searchQuotes("hit me baby"));
 // console.log(quoteModel.searchQuotes("hit me baby"));

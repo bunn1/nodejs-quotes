@@ -1,10 +1,10 @@
+
 import chalk from 'chalk';
 
 export default {
     usage: `
 Welcome to Quotes app.
 Save your favorite quotes here.
-
 Usage:
     new:        used to create new quote
     get:        used to get all quotes
